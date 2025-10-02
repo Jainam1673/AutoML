@@ -93,36 +93,42 @@ A **hyper-modern**, **over-engineered**, **cutting-edge** AutoML platform that c
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/automl.git
-cd automl
+git clone https://github.com/Jainam1673/AutoML.git
+cd AutoML
 
-# Install with uv (recommended)
-uv sync
+# Install with uv (fastest, recommended)
+uv pip install -r requirements.txt
 
 # Or install with pip
-pip install -e .
+pip install -r requirements.txt
 
-# Install with GPU support
-uv sync --extra gpu
-
-# Install all optional dependencies
-uv sync --extra all
+# Verify installation
+python -c "import sys; sys.path.insert(0, 'src'); from automl import __version__; print(f'✅ AutoML {__version__}')"
 ```
+
+> 📖 **Detailed installation guide:** See [INSTALL.md](INSTALL.md) for complete instructions, troubleshooting, and GPU setup.
+
+**What gets installed:** 164 packages including scikit-learn, xgboost, lightgbm, catboost, optuna, mlflow, streamlit, fastapi, and more.
+
+**Requirements:** Python 3.13+
 
 ### Basic Usage
 
 ```bash
 # Run AutoML with a configuration file
-uv run automl run --config configs/iris_classification.yaml
+python -m automl run --config configs/iris_classification.yaml
+
+# Or use the CLI directly
+automl run --config configs/iris_classification.yaml
 
 # Validate configuration
-uv run automl validate configs/iris_classification.yaml
+automl validate configs/iris_classification.yaml
 
 # Display system information
-uv run automl info
+automl info
 
 # Show version
-uv run automl version
+automl version
 ```
 
 ### Python API Example
