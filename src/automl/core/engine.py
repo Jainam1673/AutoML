@@ -263,4 +263,19 @@ def default_engine() -> AutoMLEngine:
         description="Multi-objective optimization using NSGA-II",
     )
     
+    # Register distributed optimizer (Ray Tune) - optional
+    try:
+        from ..optimizers import ray_optimizer as ray_opt
+        engine.register_optimizer(
+            "ray_tune",
+            lambda params: ray_opt.RayTuneOptimizer(
+                event_bus=engine.instrumentation.events,
+                settings=ray_opt.RayTuneSettings(**(params or {})),
+            ),
+            description="Distributed hyperparameter optimization with Ray Tune - exabyte scale",
+        )
+    except ImportError:
+        # Ray is optional dependency
+        pass
+    
     return engine

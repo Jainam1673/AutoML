@@ -117,12 +117,20 @@ dependencies = [
 
 [project.optional-dependencies]
 distributed = [
+    # Ray for distributed computing and hyperparameter search
     "ray[default]>=2.40.0",
     "ray[tune]>=2.40.0",
     "ray[serve]>=2.40.0",
+    "ray[data]>=2.40.0",
+    # Dask for out-of-core computation and exabyte-scale datasets
     "dask[complete]>=2024.11.2",
     "dask-ml>=2024.4.4",
     "distributed>=2024.11.2",
+    # Cloud storage integration
+    "s3fs>=2024.10.0",  # S3 support
+    "gcsfs>=2024.10.0",  # Google Cloud Storage
+    "adlfs>=2024.7.0",  # Azure Data Lake
+    "fsspec>=2024.10.0",  # Unified filesystem interface
 ]
 gpu = [
     "torch>=2.5.1",
@@ -170,19 +178,40 @@ nas = [
     "nni>=3.0",  # Neural Network Intelligence
 ]
 api = [
+    # REST API and async server
     "fastapi>=0.115.6",
     "uvicorn[standard]>=0.34.0",
     "pydantic>=2.10.3",
     "httpx>=0.28.1",
     "websockets>=14.1",
+    # Distributed caching and task queue
     "redis>=5.2.1",
+    "hiredis>=3.0.0",  # High-performance Redis parser
     "celery>=5.4.0",
+    "kombu>=5.4.2",  # Messaging library
+    # Production utilities
+    "gunicorn>=23.0.0",  # WSGI HTTP Server
+    "python-multipart>=0.0.18",  # Form data parsing
 ]
 monitoring = [
+    # Metrics and observability
     "prometheus-client>=0.21.0",
     "grafana-client>=4.0.2",
+    "statsd>=4.0.1",
+    # Model monitoring and drift detection
     "evidently>=0.4.48",
     "alibi-detect>=0.12.1",
+    "deepchecks>=0.18.1",
+    "nannyml>=0.10.7",
+]
+tracking = [
+    # Experiment tracking
+    "mlflow>=2.18.0",
+    "wandb>=0.18.7",
+    "tensorboard>=2.18.0",
+    "aim>=3.24.0",
+    # Model registry
+    "mlflow-skinny>=2.18.0",
 ]
 devtools = [
     "ipykernel>=6.29.5",
@@ -191,8 +220,12 @@ devtools = [
     "jupyterlab>=4.3.4",
     "ipywidgets>=8.1.5",
 ]
+production = [
+    # Production-ready exabyte-scale stack
+    "automl[distributed,api,monitoring,tracking]",
+]
 all = [
-    "automl[distributed,gpu,vision,nlp,timeseries,autogluon,nas,api,monitoring]",
+    "automl[distributed,gpu,vision,nlp,timeseries,autogluon,nas,api,monitoring,tracking]",
 ]
 
 [project.scripts]
