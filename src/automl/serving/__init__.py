@@ -13,8 +13,12 @@ try:
         create_app,
         run_server,
     )
+    # Alias for convenience
+    AutoMLAPI = ModelServer
+    
     __all__.extend([
         "ModelServer",
+        "AutoMLAPI",
         "PredictionRequest",
         "PredictionResponse",
         "BatchPredictionRequest",
