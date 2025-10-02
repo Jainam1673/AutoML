@@ -10,10 +10,14 @@ try:
         DriftDetector,
         PerformanceMonitor,
     )
+    # Alias for convenience
+    ModelMonitor = PerformanceMonitor
+    
     __all__.extend([
         "MetricsCollector",
         "DriftDetector",
         "PerformanceMonitor",
+        "ModelMonitor",
     ])
 except ImportError:
     pass

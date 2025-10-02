@@ -8,5 +8,20 @@ Provides pipeline builders and preprocessing:
 from __future__ import annotations
 
 from . import advanced, sklearn
+from .base import PipelineFactory, PipelineArtifact
+from .advanced import AutoFeatureEngineer, TimeSeriesFeatureEngineer
 
-__all__ = ["sklearn", "advanced"]
+# Convenience aliases
+SklearnPipeline = PipelineFactory
+AdvancedPipeline = AutoFeatureEngineer
+
+__all__ = [
+    "sklearn",
+    "advanced",
+    "PipelineFactory",
+    "PipelineArtifact",
+    "SklearnPipeline",
+    "AdvancedPipeline",
+    "AutoFeatureEngineer",
+    "TimeSeriesFeatureEngineer",
+]

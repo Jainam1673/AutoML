@@ -1,0 +1,327 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "automl"
+version = "0.1.0"
+description = "State-of-the-art AutoML framework with production-ready features"
+readme = "README.md"
+requires-python = ">=3.13"
+authors = [
+    { name = "Jainam Patel", email = "jainampatel1673@gmail.com" }
+]
+license = { text = "Apache-2.0" }
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = [
+    # Core scientific computing (latest versions)
+    "numpy",
+    "pandas",
+    "polars",  # Blazing fast dataframes
+    "scikit-learn",
+    "scipy",
+    "pyarrow",
+    
+    # Gradient boosting frameworks (GPU-enabled)
+    "lightgbm",
+    "xgboost",
+    "catboost",
+    
+    # Hyperparameter optimization
+    "optuna",
+    "optuna-integration",
+    "hyperopt",
+    "scikit-optimize",
+    "bayesian-optimization",
+    
+    # Configuration management
+    "hydra-core",
+    "omegaconf",
+    "pydantic",
+    "pydantic-settings",
+    "pyyaml",
+    
+    # MLOps and tracking
+    "mlflow",
+    "wandb",
+    "tensorboard",
+    
+    # Model explainability
+    "shap",
+    "lime",
+    "interpret",
+    
+    # Feature engineering
+    "featuretools",
+    "category-encoders",
+    "feature-engine",
+    
+    # CLI and UI
+    "rich",
+    "typer",
+    "click",
+    "tqdm",
+    
+    # Async and concurrency
+    "asyncio",
+    "joblib",
+    "loky",
+    
+    # Data validation
+    "pandera",
+    "great-expectations",
+    
+    # Caching and serialization
+    "diskcache",
+    "msgpack",
+    "orjson",
+    "cloudpickle",
+]
+
+[project.urls]
+Homepage = "https://github.com/Jainam1673/AutoML"
+Repository = "https://github.com/Jainam1673/AutoML.git"
+Documentation = "https://github.com/Jainam1673/AutoML#readme"
+Issues = "https://github.com/Jainam1673/AutoML/issues"
+Changelog = "https://github.com/Jainam1673/AutoML/blob/main/CHANGELOG.md"
+
+[project.scripts]
+automl = "automl.cli:app"
+
+[project.optional-dependencies]
+distributed = [
+    # Ray for distributed computing and hyperparameter search
+    "ray[default]",
+    "ray[tune]",
+    "ray[serve]",
+    "ray[data]",
+    # Dask for out-of-core computation and exabyte-scale datasets
+    "dask[complete]",
+    "dask-ml",
+    "distributed",
+    # Cloud storage integration
+    "s3fs",  # S3 support
+    "gcsfs",  # Google Cloud Storage
+    "adlfs",  # Azure Data Lake
+    "fsspec",  # Unified filesystem interface
+]
+# gpu = [  # Not yet fully compatible with Python 3.13
+#     "torch",
+#     "torchvision",
+#     "lightning",
+#     "flash-attn",
+#     "cupy-cuda12x",
+#     "cuml-cu12",
+#     "xgboost[gpu]",
+# ]
+vision = [
+    "timm",  # PyTorch image models
+    "torchvision",
+    "albumentations",
+    "opencv-python",
+    "pillow",
+    "torchmetrics",
+]
+nlp = [
+    "transformers",
+    "tokenizers",
+    "sentencepiece",
+    "accelerate",
+    "datasets",
+    "sentence-transformers",
+    "spacy",
+]
+timeseries = [
+    "prophet",
+    "neuralprophet",
+    "darts",
+    "statsforecast",
+    "neuralforecast",
+    "gluonts",
+    "tslearn",
+]
+# autogluon = [
+#     "autogluon",  # Not yet compatible with Python 3.13
+#     "autogluon.tabular",
+#     "autogluon.timeseries",
+# ]
+nas = [
+    "autokeras",
+    "keras-tuner",
+    "nni",  # Neural Network Intelligence
+]
+api = [
+    # REST API and async server
+    "fastapi",
+    "uvicorn[standard]",
+    "pydantic",
+    "httpx",
+    "websockets",
+    # Distributed caching and task queue
+    "redis",
+    "hiredis",  # High-performance Redis parser
+    "celery",
+    "kombu",  # Messaging library
+    # Production utilities
+    "gunicorn",  # WSGI HTTP Server
+    "python-multipart",  # Form data parsing
+]
+monitoring = [
+    # Metrics and observability
+    "prometheus-client",
+    "grafana-client",
+    "statsd",
+    # Model monitoring and drift detection
+    "evidently",
+    "alibi-detect",
+    "deepchecks",
+    "nannyml",
+]
+tracking = [
+    # Experiment tracking
+    "mlflow",
+    "wandb",
+    "tensorboard",
+    "aim",
+    # Model registry
+    "mlflow-skinny",
+]
+devtools = [
+    "ipykernel",
+    "jupyter",
+    "notebook",
+    "jupyterlab",
+    "ipywidgets",
+]
+security = [
+    # Security and compliance
+    "cryptography",  # Model encryption
+    "pynacl",  # Cryptographic library
+    "paramiko",  # SSH for secure connections
+]
+dashboard = [
+    # Interactive dashboard
+    "streamlit",
+    "plotly",
+    "altair",
+    "bokeh",
+]
+benchmarks = [
+    # Benchmarking and comparison
+    "openml",  # OpenML dataset repository
+    "scikit-learn-intelex",  # Intel optimizations
+]
+docs_gen = [
+    # Automated documentation generation
+    "pdoc3",
+    "sphinx",
+    "sphinx-rtd-theme",
+    "docstring-parser",
+]
+production = [
+    # Production-ready exabyte-scale stack
+    "automl[distributed,api,monitoring,tracking,security]",
+]
+ultimate = [
+    # Everything - nothing left out (except gpu and autogluon which need Python 3.12)
+    "automl[distributed,vision,nlp,timeseries,api,monitoring,tracking,security,dashboard,benchmarks,docs_gen]",
+]
+all = [
+    "automl[ultimate]",
+]
+
+[tool.uv]
+package = true
+default-groups = ["dev"]
+python-preference = "managed"
+
+[dependency-groups]
+dev = [
+    "pytest",
+    "pytest-cov",
+    "pytest-asyncio",
+    "hypothesis",
+    "ruff",
+    "mypy",
+    "types-PyYAML",
+    "types-requests",
+]
+docs = [
+    "mkdocs-material",
+    "mkdocstrings[python]",
+    "griffe",
+]
+bench = [
+    "pytest-benchmark",
+    "perfana",
+]
+notebooks = [
+    "polars[pandas]",
+    "plotly",
+]
+qa = [
+    "pytest-xdist",
+    "pytest-timeout",
+    "pytest-rerunfailures",
+]
+
+[tool.uv.dependency-groups]
+qa = { requires-python = ">=3.13" }
+
+[tool.uv.workspace]
+members = ["examples/*", "benchmarks/*"]
+
+[tool.uv.pip]
+compile-bytecode = true
+prerelease = "allow"
+strict = true
+
+[tool.mypy]
+python_version = "3.13"
+check_untyped_defs = true
+warn_unused_ignores = true
+warn_return_any = true
+strict_optional = true
+packages = ["automl"]
+
+[tool.ruff]
+line-length = 110
+src = ["src"]
+exclude = [".venv", "dist", "build"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "ANN", "DTZ", "FBT", "ICN", "ISC", "PYI", "Q", "T20", "ARG", "PL", "RUF"]
+ignore = ["ANN101", "ANN102", "FBT003"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "lf"
+
+[tool.pytest.ini_options]
+minversion = "8.0"
+addopts = "-ra -q --durations=10 --strict-markers --strict-config"
+testpaths = ["tests"]
+xfail_strict = true
+filterwarnings = [
+    "error",
+    "ignore:distutils Version:DeprecationWarning",
+]
+
+[tool.coverage.run]
+branch = true
+source = ["automl"]
+parallel = true
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = true
+precision = 2

@@ -7,9 +7,13 @@ from __future__ import annotations
 
 import logging
 from dataclasses import dataclass
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import numpy as np
+
+if TYPE_CHECKING:
+    import torch
+    import torch.nn as nn
 
 try:
     import torch
@@ -28,50 +32,65 @@ __all__ = [
 
 logger = logging.getLogger(__name__)
 
-
-class VisionEncoder(nn.Module):
-    """Vision encoder using efficient architectures."""
+# Only define classes if torch is available
+if not TORCH_AVAILABLE:
+    # Create stub classes that raise ImportError
+    class _StubClass:
+        def __init__(self, *args: Any, **kwargs: Any) -> None:
+            raise ImportError("PyTorch is required for multi-modal features. Install with: pip install torch")
     
-    def __init__(self, input_channels: int = 3, output_dim: int = 512) -> None:
-        """Initialize vision encoder.
-        
-        Args:
-            input_channels: Number of input channels (3 for RGB)
-            output_dim: Output embedding dimension
-        """
-        if not TORCH_AVAILABLE:
-            raise ImportError("PyTorch required for VisionEncoder")
-        
-        super().__init__()
-        
-        # Simple CNN encoder (can be replaced with ViT, ResNet, etc.)
-        self.encoder = nn.Sequential(
-            nn.Conv2d(input_channels, 64, kernel_size=3, padding=1),
-            nn.ReLU(),
-            nn.MaxPool2d(2),
-            nn.Conv2d(64, 128, kernel_size=3, padding=1),
-            nn.ReLU(),
-            nn.MaxPool2d(2),
-            nn.Conv2d(128, 256, kernel_size=3, padding=1),
-            nn.ReLU(),
-            nn.AdaptiveAvgPool2d((1, 1)),
-            nn.Flatten(),
-            nn.Linear(256, output_dim),
-        )
+    VisionEncoder = _StubClass  # type: ignore
+    TextEncoder = _StubClass  # type: ignore
+    TabularEncoder = _StubClass  # type: ignore
+    FusionLayer = _StubClass  # type: ignore
+    MultiModalModel = _StubClass  # type: ignore
     
-    def forward(self, x: torch.Tensor) -> torch.Tensor:
-        """Forward pass.
+else:
+    # Actual implementations when torch is available
+    
+    class VisionEncoder(nn.Module):
+        """Vision encoder using efficient architectures."""
         
-        Args:
-            x: Input images (B, C, H, W)
+        def __init__(self, input_channels: int = 3, output_dim: int = 512) -> None:
+            """Initialize vision encoder.
+            
+            Args:
+                input_channels: Number of input channels (3 for RGB)
+                output_dim: Output embedding dimension
+            """
+            if not TORCH_AVAILABLE:
+                raise ImportError("PyTorch required for VisionEncoder")
+            
+            super().__init__()
+            
+            # Simple CNN encoder (can be replaced with ViT, ResNet, etc.)
+            self.encoder = nn.Sequential(
+                nn.Conv2d(input_channels, 64, kernel_size=3, padding=1),
+                nn.ReLU(),
+                nn.MaxPool2d(2),
+                nn.Conv2d(64, 128, kernel_size=3, padding=1),
+                nn.ReLU(),
+                nn.MaxPool2d(2),
+                nn.Conv2d(128, 256, kernel_size=3, padding=1),
+                nn.ReLU(),
+                nn.AdaptiveAvgPool2d((1, 1)),
+                nn.Flatten(),
+                nn.Linear(256, output_dim),
+            )
         
-        Returns:
-            Vision embeddings (B, output_dim)
-        """
-        return self.encoder(x)
+        def forward(self, x: torch.Tensor) -> torch.Tensor:
+            """Forward pass.
+            
+            Args:
+                x: Input images (B, C, H, W)
+            
+            Returns:
+                Vision embeddings (B, output_dim)
+            """
+            return self.encoder(x)
 
 
-class TextEncoder(nn.Module):
+    class TextEncoder(nn.Module):
     """Text encoder using transformers or RNNs."""
     
     def __init__(

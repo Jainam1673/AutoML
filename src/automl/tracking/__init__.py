@@ -11,8 +11,12 @@ try:
         ModelRegistry,
         MLflowConfig,
     )
+    # Alias for convenience
+    MLflowIntegration = MLflowTracker
+    
     __all__.extend([
         "MLflowTracker",
+        "MLflowIntegration",
         "ExperimentTracker",
         "ModelRegistry",
         "MLflowConfig",

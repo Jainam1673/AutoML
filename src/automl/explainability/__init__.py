@@ -10,6 +10,7 @@ import numpy as np
 __all__ = [
     "ExplainerProtocol",
     "SHAPExplainer",
+    "ShapExplainer",
     "LIMEExplainer",
     "FeatureImportanceExplainer",
     "create_explainer",
@@ -381,3 +382,7 @@ def create_explainer(
         return FeatureImportanceExplainer(model, **kwargs)
     else:
         raise ValueError(f"Unknown explainer method: {method}")
+
+
+# Alias for common typo/convention
+ShapExplainer = SHAPExplainer
