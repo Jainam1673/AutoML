@@ -1,0 +1,78 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Virtual environments
+.venv/
+.uv/
+venv/
+env/
+ENV/
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+.eggs/
+uv.lock
+pylock.toml
+wheels/
+*.egg
+MANIFEST
+
+# Pytest
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.hypothesis/
+.tox/
+.nox/
+
+# Editors
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Type checking
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.pytype/
+
+# Data / artifacts
+artifacts/
+logs/
+outputs/
+models/
+experiments/
+mlruns/
+wandb/
+.optuna/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Data files (don't commit datasets)
+data/
+*.csv
+*.parquet
+*.feather
+*.h5
+*.hdf5
+
+# Model files
+*.joblib
+*.pkl
+*.pickle
+*.pt
+*.pth
+*.onnx
+*.h5

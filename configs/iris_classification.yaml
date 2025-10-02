@@ -1,0 +1,62 @@
+# AutoML Configuration Example: Iris Classification
+# This demonstrates a complete AutoML workflow with hyperparameter optimization
+
+run_name: "iris_classification_advanced"
+
+dataset:
+  name: "iris"
+
+pipeline:
+  preprocessors:
+    - name: "standard_scaler"
+      params:
+        with_mean: true
+        with_std: true
+    
+    - name: "pca"
+      params:
+        n_components: 3
+        whiten: false
+
+  model:
+    name: "xgboost_classifier"  # Options: logistic_regression, random_forest_classifier, xgboost_classifier, lightgbm_classifier, catboost_classifier
+    
+    base_params:
+      n_estimators: 100
+      learning_rate: 0.1
+      random_state: 42
+    
+    search_space:
+      # Different hyperparameter configurations to try
+      - max_depth: 3
+        min_child_weight: 1
+        subsample: 0.8
+        colsample_bytree: 0.8
+      
+      - max_depth: 5
+        min_child_weight: 3
+        subsample: 0.9
+        colsample_bytree: 0.9
+      
+      - max_depth: 7
+        min_child_weight: 5
+        subsample: 0.7
+        colsample_bytree: 0.7
+      
+      - max_depth: 10
+        min_child_weight: 1
+        subsample: 0.8
+        colsample_bytree: 1.0
+
+optimizer:
+  name: "optuna"  # Options: random_search, optuna
+  cv_folds: 5
+  scoring: "accuracy"  # Options: accuracy, f1_score, roc_auc, etc.
+  
+  params:
+    n_trials: 50
+    sampler: "tpe"  # Tree-structured Parzen Estimator
+    pruner: "hyperband"
+    n_jobs: -1
+    show_progress_bar: true
+    use_early_stopping: true

@@ -1,0 +1,51 @@
+# Advanced Configuration: Ensemble Learning with Multi-Objective Optimization
+
+run_name: "advanced_ensemble_multiobj"
+
+dataset:
+  name: "iris"
+
+pipeline:
+  preprocessors:
+    - name: "robust_scaler"
+      params:
+        quantile_range: [25.0, 75.0]
+    
+    - name: "polynomial_features"
+      params:
+        degree: 2
+        interaction_only: false
+    
+    - name: "feature_selector"
+      params:
+        k: 10
+
+  model:
+    name: "ensemble_classifier"  # Auto-ensemble with stacking
+    
+    base_params:
+      ensemble_strategy: "stacking"
+      optimize_weights: true
+      cv: 5
+    
+    search_space:
+      - ensemble_strategy: "stacking"
+        cv: 5
+      
+      - ensemble_strategy: "voting"
+        cv: 3
+      
+      - ensemble_strategy: "weighted"
+        cv: 5
+
+optimizer:
+  name: "multi_objective_optuna"
+  cv_folds: 5
+  scoring: ["accuracy", "f1_weighted"]  # Optimize multiple objectives
+  
+  params:
+    n_trials: 100
+    population_size: 50
+    n_jobs: -1
+    show_progress_bar: true
+    objectives: ["accuracy", "f1_weighted"]

@@ -1,0 +1,64 @@
+# GPU-Accelerated Configuration: High-Performance Gradient Boosting
+
+run_name: "gpu_boosting_benchmark"
+
+dataset:
+  name: "iris"
+
+pipeline:
+  preprocessors:
+    - name: "quantile_transformer"
+      params:
+        n_quantiles: 1000
+        output_distribution: "normal"
+    
+    - name: "power_transformer"
+      params:
+        method: "yeo-johnson"
+        standardize: true
+
+  model:
+    name: "catboost_classifier"  # CatBoost with GPU support
+    
+    base_params:
+      task_type: "GPU"  # Enable GPU acceleration
+      devices: "0"
+      iterations: 1000
+      learning_rate: 0.03
+      depth: 8
+      random_seed: 42
+      verbose: false
+    
+    search_space:
+      - depth: 6
+        l2_leaf_reg: 1.0
+        bagging_temperature: 0.5
+      
+      - depth: 8
+        l2_leaf_reg: 3.0
+        bagging_temperature: 1.0
+      
+      - depth: 10
+        l2_leaf_reg: 5.0
+        bagging_temperature: 1.5
+      
+      - depth: 12
+        l2_leaf_reg: 7.0
+        bagging_temperature: 2.0
+
+optimizer:
+  name: "optuna"
+  cv_folds: 10
+  scoring: "accuracy"
+  
+  params:
+    n_trials: 200
+    timeout: 3600  # 1 hour timeout
+    sampler: "cmaes"  # CMA-ES for continuous optimization
+    pruner: "successive_halving"
+    n_jobs: 4  # Parallel optimization
+    show_progress_bar: true
+    use_early_stopping: true
+    min_resource: 2
+    max_resource: 20
+    reduction_factor: 3
