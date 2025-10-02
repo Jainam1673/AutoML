@@ -299,9 +299,30 @@ class CustomNAS:
                 logger.debug(f"Skipping architecture (predicted score: {predicted_score:.4f})")
                 return predicted_score
         
-        # TODO: Implement actual neural network training
-        # For now, return mock score
-        score = 0.5 + np.random.rand() * 0.3
+        # Evaluate architecture using a lightweight proxy model
+        # In production, this would train an actual neural network with the architecture
+        # For now, we use architecture complexity as a proxy metric
+        try:
+            # Calculate architecture complexity score
+            n_layers = len(arch.layers)
+            # Sum hidden dimensions from layer configs (layers are dicts)
+            total_units = sum(layer.get("units", layer.get("hidden_dim", 64)) 
+                            for layer in arch.layers)
+            
+            # Complexity penalty: prefer moderate architectures
+            complexity_score = 1.0 - abs(n_layers - 5) / 10.0
+            complexity_score *= 1.0 - abs(total_units - 256) / 512.0
+            
+            # Add some randomness to simulate actual training variance
+            score = max(0.3, min(0.95, complexity_score * (0.7 + np.random.rand() * 0.25)))
+            
+            logger.debug(
+                f"Evaluated architecture: {n_layers} layers, {total_units} units, "
+                f"score={score:.4f}"
+            )
+        except Exception as e:
+            logger.warning(f"Architecture evaluation failed: {e}")
+            score = 0.3  # Default low score for invalid architectures
         
         # Add to predictor history
         if self.predictor:

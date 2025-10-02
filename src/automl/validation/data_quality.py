@@ -52,6 +52,41 @@ class DataQualityReport:
     issues: list[str] = field(default_factory=list)
     warnings: list[str] = field(default_factory=list)
     
+    @property
+    def n_missing(self) -> int:
+        """Total number of missing values across all features."""
+        return sum(int(pct * self.n_samples / 100) for pct in self.missing_values.values())
+    
+    @property
+    def missing_percentage(self) -> float:
+        """Percentage of missing values (alias for total_missing_percentage)."""
+        return self.total_missing_percentage
+    
+    @property
+    def is_clean(self) -> bool:
+        """Whether the data has no critical issues."""
+        return len(self.issues) == 0 and self.quality_score >= 80.0
+    
+    def to_dict(self) -> dict[str, Any]:
+        """Convert report to dictionary."""
+        return {
+            "n_samples": self.n_samples,
+            "n_features": self.n_features,
+            "missing_values": self.missing_values,
+            "total_missing_percentage": self.total_missing_percentage,
+            "n_missing": self.n_missing,
+            "missing_percentage": self.missing_percentage,
+            "n_duplicate_rows": self.n_duplicate_rows,
+            "duplicate_percentage": self.duplicate_percentage,
+            "outlier_features": self.outlier_features,
+            "total_outliers": self.total_outliers,
+            "feature_types": self.feature_types,
+            "quality_score": self.quality_score,
+            "is_clean": self.is_clean,
+            "issues": self.issues,
+            "warnings": self.warnings,
+        }
+    
     def __str__(self) -> str:
         """String representation."""
         lines = [
@@ -144,7 +179,7 @@ class DataValidator:
                 total_outliers += outliers
         
         # Feature types
-        feature_types = {col: str(dtype) for col, dtype in data.dtypes.items()}
+        feature_types = {str(col): str(dtype) for col, dtype in data.dtypes.items()}
         
         # Quality score
         quality_score = self._compute_quality_score(
